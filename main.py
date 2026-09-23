@@ -15,13 +15,13 @@ def startup_event():
     existing = db.query(models.Desenho).first()
     if not existing:
         novo_desenho = models.Desenho(
-            title="Chapolin Colorado",
-            season_info="Temporada Completa",
+            title="Pica-Pau Clássico",
+            season_info="Mega Compilação • 38 Episódios",
             age_rating="Livre",
-            cover_url="https://i.postimg.cc/VNbVhKz3/CH.jpg",
-            playlist_url="https://www.youtube.com/embed/videoseries?list=PLizo7oIW63nw-KlqCRYPYSjpPTXB4qxtF",
-            description="As confusões e o heroísmo do herói mais amado da televisão.",
-            sinopse="Não contavam com a astúcia dele! Acompanhe as hilárias e eletrizantes aventuras do Chapolin Colorado, o herói mais divertido, atrapalhado e corajoso de todos os tempos. Armado com sua marreta biônica e sua inabalável (mas duvidosa) coragem, ele está sempre pronto para acudir os aflitos... embora quase sempre acabe complicando ainda mais a situação. Prepare-se para muitas risadas e nostalgia pura!"
+            cover_url="https://i.postimg.cc/2jKmgKDg/PICAPAU.webp",
+            playlist_url="https://www.youtube.com/embed/_Iv77kFEtow",
+            description="As confusões mais divertidas e clássicas do pássaro mais maluco do desenho.",
+            sinopse="Prepare-se para dar muitas risadas com as trapalhadas clássicas do Pica-Pau! Sempre inventando confusões, fugindo de armadilhas e soltando aquela risada inconfundível que marcou gerações. Uma seleção imperdível com uma super maratona de 38 episódios completos e remasterizados para toda a família curtir sem interrupções."
         )
         db.add(novo_desenho)
         db.commit()
