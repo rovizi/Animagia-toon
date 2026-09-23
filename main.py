@@ -1,5 +1,4 @@
 from fastapi import FastAPI, Depends, HTTPException
-from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 import models
 import schemas
@@ -7,44 +6,31 @@ from database import engine, get_db
 
 models.Base.metadata.create_all(bind=engine)
 
-app = FastAPI(title="Animagia Desenhos API", version="1.0.0")
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+app = FastAPI(title="Animagia Toon API", version="1.0.0")
 
 @app.on_event("startup")
-def seed_data():
+def startup_event():
     db = next(get_db())
-    if db.query(models.DesenhoItem).count() == 0:
-        initial_item = models.DesenhoItem(
+    # Verifica se já existe o registro para evitar duplicação
+    existing = db.query(models.Desenho).first()
+    if not existing:
+        novo_desenho = models.Desenho(
             title="Chaves em Desenho",
             season_info="Temporadas 1-7",
             age_rating="Livre",
-            cover_url="https://i.postimg.cc/MTtdkzwX/chaves-desenho.jpg",
-            playlist_url="https://www.youtube.com/watch?v=pUmhmTNZFiE&list=PL-rGbptKz8EXcQpBnH6LzLk03BZO5FowS",
-            description="As aventuras completas da vizinhança em versão animada (Temporadas 1 a 7)."
+            cover_url="https://i.postimg.com/MTtdkzwX/chaves-desenho.jpg",
+            playlist_url="https://www.youtube.com/watch?v=PUmhmTNZFjE&list=PL-rGbptKz8EXcQpBnH6LzLk03BZ05FowS",
+            description="As aventuras completas da vizinhança em versão animada (Temporadas 1 a 7).",
+            sinopse="A clássica turma da vizinhança ganha vida nesta versão animada repleta de diversão e confusões. Acompanhe Chaves, Chiquinha, Kiko e todos os moradores em episódios inéditos e releituras das melhores histórias que marcaram gerações, agora em formato de animação para toda a família."
         )
-        db.add(initial_item)
+        db.add(novo_desenho)
         db.commit()
 
 @app.get("/")
 def read_root():
     return {"message": "Bem-vindo à API exclusiva de Desenhos do Animagia!"}
 
-@app.get("/desenhos/", response_model=list[schemas.DesenhoResponse])
-def get_desenhos(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    items = db.query(models.DesenhoItem).offset(skip).limit(limit).all()
-    return items
-
-@app.post("/desenhos/", response_model=schemas.DesenhoResponse)
-def create_desenho(item: schemas.DesenhoCreate, db: Session = Depends(get_db)):
-    db_item = models.DesenhoItem(**item.dict())
-    db.add(db_item)
-    db.commit()
-    db.refresh(db_item)
-    return db_item
+@app.get("/desenhos/", response_model=list[schemas.Desenho])
+def listar_desenhos(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    desenhos = db.query(models.Desenho).offset(skip).limit(limit).all()
+    return desenhos

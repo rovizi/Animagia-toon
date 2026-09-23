@@ -1,18 +1,21 @@
 from pydantic import BaseModel
+from typing import Optional
 
 class DesenhoBase(BaseModel):
     title: str
     season_info: str
-    age_rating: str = "Livre"
+    age_rating: str
     cover_url: str
     playlist_url: str
     description: str
+    sinopse: Optional[str] = None  # Incluído no schema
 
 class DesenhoCreate(DesenhoBase):
     pass
 
-class DesenhoResponse(DesenhoBase):
+class Desenho(DesenhoBase):
     id: int
 
     class Config:
-        from_attributes = True
+        orm_mode = True
+
