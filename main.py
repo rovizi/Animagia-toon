@@ -18,8 +18,8 @@ def startup_event():
             title="Chaves em Desenho",
             season_info="Temporadas 1-7",
             age_rating="Livre",
-            cover_url="https://i.postimg.com/MTtdkzwX/chaves-desenho.jpg",
-            playlist_url="https://www.youtube.com/watch?v=PUmhmTNZFjE&list=PL-rGbptKz8EXcQpBnH6LzLk03BZ05FowS",
+            cover_url="https://i.postimg.cc/GtK0SW7F/chaves-desenho.jpg",
+            playlist_url="https://www.youtube.com/embed/PUmhmTNZFjE",
             description="As aventuras completas da vizinhança em versão animada (Temporadas 1 a 7).",
             sinopse="A clássica turma da vizinhança ganha vida nesta versão animada repleta de diversão e confusões. Acompanhe Chaves, Chiquinha, Kiko e todos os moradores em episódios inéditos e releituras das melhores histórias que marcaram gerações, agora em formato de animação para toda a família."
         )
@@ -77,6 +77,9 @@ def read_root(db: Session = Depends(get_db)):
                 background-image: url('{desenho.cover_url}');
                 background-size: cover;
                 background-position: center;
+                display: flex;
+                align-items: center;
+                justify-content: center;
             }}
             .badge-age {{
                 position: absolute;
@@ -88,6 +91,29 @@ def read_root(db: Session = Depends(get_db)):
                 font-size: 12px;
                 font-weight: bold;
                 border-radius: 6px;
+            }}
+            .play-btn {{
+                background-color: #ffcc00;
+                border: none;
+                width: 64px;
+                height: 64px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+                transition: transform 0.2s, background-color 0.2s;
+                z-index: 2;
+            }}
+            .play-btn:hover {{
+                transform: scale(1.1);
+                background-color: #ffd633;
+            }}
+            .play-icon {{
+                width: 32px;
+                height: 32px;
+                fill: #121212;
             }}
             .card-body {{
                 padding: 16px;
@@ -116,20 +142,41 @@ def read_root(db: Session = Depends(get_db)):
                 margin-top: 4px;
                 line-height: 1.4;
             }}
-            .btn {{
-                display: block;
-                text-align: center;
-                background-color: #e50914;
-                color: white;
-                text-decoration: none;
-                padding: 10px;
-                border-radius: 8px;
-                font-weight: bold;
-                margin-top: 12px;
-                transition: background 0.2s;
+            /* Modal / Player na tela */
+            .modal {{
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0,0,0,0.9);
+                justify-content: center;
+                align-items: center;
+                z-index: 100;
             }}
-            .btn:hover {{
-                background-color: #f40612;
+            .modal-content {{
+                position: relative;
+                width: 80%;
+                max-width: 800px;
+                aspect-ratio: 16/9;
+            }}
+            .modal-content iframe {{
+                width: 100%;
+                height: 100%;
+                border: none;
+                border-radius: 8px;
+            }}
+            .close-btn {{
+                position: absolute;
+                top: -40px;
+                right: 0;
+                color: white;
+                font-size: 28px;
+                font-weight: bold;
+                cursor: pointer;
+                background: none;
+                border: none;
             }}
         </style>
     </head>
@@ -138,6 +185,11 @@ def read_root(db: Session = Depends(get_db)):
         <div class="card">
             <div class="card-header">
                 <span class="badge-age">{desenho.age_rating}</span>
+                <button class="play-btn" onclick="openPlayer()" title="Assistir">
+                    <svg class="play-icon" viewBox="0 0 24 24">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
+                    </svg>
+                </button>
             </div>
             <div class="card-body">
                 <h2 class="title">{desenho.title}</h2>
@@ -145,9 +197,32 @@ def read_root(db: Session = Depends(get_db)):
                 <div class="sinopse-box">
                     <strong>Sinopse:</strong> {desenho.sinopse}
                 </div>
-                <a href="{desenho.playlist_url}" target="_blank" class="btn">Assistir Maratona</a>
             </div>
         </div>
+
+        <!-- Player Modal -->
+        <div id="videoModal" class="modal">
+            <div class="modal-content">
+                <button class="close-btn" onclick="closePlayer()">&times;</button>
+                <iframe id="videoFrame" src="" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+            </div>
+        </div>
+
+        <script>
+            function openPlayer() {{
+                const modal = document.getElementById('videoModal');
+                const iframe = document.getElementById('videoFrame');
+                iframe.src = "{desenho.playlist_url}?autoplay=1";
+                modal.style.display = "flex";
+            }}
+
+            function closePlayer() {{
+                const modal = document.getElementById('videoModal');
+                const iframe = document.getElementById('videoFrame');
+                iframe.src = "";
+                modal.style.display = "none";
+            }}
+        </script>
     </body>
     </html>
     """
