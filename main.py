@@ -105,6 +105,7 @@ def read_root(db: Session = Depends(get_db)):
                 box-shadow: 0 4px 12px rgba(0,0,0,0.5);
                 transition: transform 0.2s, background-color 0.2s;
                 z-index: 2;
+                text-decoration: none;
             }}
             .play-btn:hover {{
                 transform: scale(1.1);
@@ -142,42 +143,6 @@ def read_root(db: Session = Depends(get_db)):
                 margin-top: 4px;
                 line-height: 1.4;
             }}
-            /* Modal / Player na tela */
-            .modal {{
-                display: none;
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background-color: rgba(0,0,0,0.9);
-                justify-content: center;
-                align-items: center;
-                z-index: 100;
-            }}
-            .modal-content {{
-                position: relative;
-                width: 80%;
-                max-width: 800px;
-                aspect-ratio: 16/9;
-            }}
-            .modal-content iframe {{
-                width: 100%;
-                height: 100%;
-                border: none;
-                border-radius: 8px;
-            }}
-            .close-btn {{
-                position: absolute;
-                top: -40px;
-                right: 0;
-                color: white;
-                font-size: 28px;
-                font-weight: bold;
-                cursor: pointer;
-                background: none;
-                border: none;
-            }}
         </style>
     </head>
     <body>
@@ -185,11 +150,11 @@ def read_root(db: Session = Depends(get_db)):
         <div class="card">
             <div class="card-header">
                 <span class="badge-age">{desenho.age_rating}</span>
-                <button class="play-btn" onclick="openPlayer()" title="Assistir">
+                <a class="play-btn" href="{desenho.playlist_url}" target="_blank" title="Assistir">
                     <svg class="play-icon" viewBox="0 0 24 24">
                         <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
                     </svg>
-                </button>
+                </a>
             </div>
             <div class="card-body">
                 <h2 class="title">{desenho.title}</h2>
@@ -199,30 +164,6 @@ def read_root(db: Session = Depends(get_db)):
                 </div>
             </div>
         </div>
-
-        <!-- Player Modal -->
-        <div id="videoModal" class="modal">
-            <div class="modal-content">
-                <button class="close-btn" onclick="closePlayer()">&times;</button>
-                <iframe id="videoFrame" src="" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-            </div>
-        </div>
-
-        <script>
-            function openPlayer() {{
-                const modal = document.getElementById('videoModal');
-                const iframe = document.getElementById('videoFrame');
-                iframe.src = "{desenho.playlist_url}?autoplay=1";
-                modal.style.display = "flex";
-            }}
-
-            function closePlayer() {{
-                const modal = document.getElementById('videoModal');
-                const iframe = document.getElementById('videoFrame');
-                iframe.src = "";
-                modal.style.display = "none";
-            }}
-        </script>
     </body>
     </html>
     """
