@@ -19,7 +19,7 @@ def startup_event():
             season_info="Temporadas 1-7",
             age_rating="Livre",
             cover_url="https://i.postimg.cc/GtK0SW7F/chaves-desenho.jpg",
-            playlist_url="https://www.youtube.com/embed/PUmhmTNZFjE",
+            playlist_url="https://www.youtube.com/embed/videoseries?list=PL-rGbptKz8EXcQpBnH6LzLk03BZ05FowS",
             description="As aventuras completas da vizinhança em versão animada (Temporadas 1 a 7).",
             sinopse="A clássica turma da vizinhança ganha vida nesta versão animada repleta de diversão e confusões. Acompanhe Chaves, Chiquinha, Kiko e todos os moradores em episódios inéditos e releituras das melhores histórias que marcaram gerações, agora em formato de animação para toda a família."
         )
