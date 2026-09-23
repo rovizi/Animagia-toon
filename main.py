@@ -15,13 +15,13 @@ def startup_event():
     existing = db.query(models.Desenho).first()
     if not existing:
         novo_desenho = models.Desenho(
-            title="Chaves em Desenho",
-            season_info="Temporadas 1-7",
+            title="Chapolin Colorado",
+            season_info="Temporada Completa",
             age_rating="Livre",
-            cover_url="https://i.postimg.cc/GtK0SW7F/chaves-desenho.jpg",
-            playlist_url="https://www.youtube.com/embed/videoseries?list=PL-rGbptKz8EXcQpBnH6LzLk03BZ05FowS",
-            description="As aventuras completas da vizinhança em versão animada (Temporadas 1 a 7).",
-            sinopse="A clássica turma da vizinhança ganha vida nesta versão animada repleta de diversão e confusões. Acompanhe Chaves, Chiquinha, Kiko e todos os moradores em episódios inéditos e releituras das melhores histórias que marcaram gerações, agora em formato de animação para toda a família."
+            cover_url="https://i.postimg.cc/VNbVhKz3/CH.jpg",
+            playlist_url="https://www.youtube.com/embed/videoseries?list=PLizo7oIW63nw-KlqCRYPYSjpPTXB4qxtF",
+            description="As confusões e o heroísmo do herói mais amado da televisão.",
+            sinopse="Não contavam com a astúcia dele! Acompanhe as hilárias e eletrizantes aventuras do Chapolin Colorado, o herói mais divertido, atrapalhado e corajoso de todos os tempos. Armado com sua marreta biônica e sua inabalável (mas duvidosa) coragem, ele está sempre pronto para acudir os aflitos... embora quase sempre acabe complicando ainda mais a situação. Prepare-se para muitas risadas e nostalgia pura!"
         )
         db.add(novo_desenho)
         db.commit()
